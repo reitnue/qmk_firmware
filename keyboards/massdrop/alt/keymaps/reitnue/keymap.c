@@ -124,9 +124,42 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 led_instruction_t led_instructions[] = {
-    { .flags = LED_FLAG_MATCH_ID | LED_FLAG_USE_RGB, .id0 = 0, .id1 = 0x000000F0, .id2 = 0, .id3 = 0, .r = 0, .g = 166, .b = 180 },
-    { .flags = LED_FLAG_MATCH_ID | LED_FLAG_USE_RGB, .id1 = 0, .id0 = 0x00000554, .id2 = 0, .id3 = 0, .r = 0xFF, .g = 0x00, .b = 0x00 },
-    { .flags = LED_FLAG_MATCH_ID | LED_FLAG_USE_RGB, .id1 = 0, .id0 = 0x000002AA, .id2 = 0, .id3 = 0, .r = 0, .g = 0xFF, .b = 0x00},
+    {
+        .flags = LED_FLAG_MATCH_ID | LED_FLAG_USE_RGB | LED_FLAG_MATCH_LAYER,
+        .layer = 0,
+        .id1 = 0x00000000, .id0 = 0x00000554, .id2 = 0x00000000, .id3 = 0x00000000,
+        .r = 0xFF, .g = 0x00, .b = 0x00
+    },
+    {
+        .flags = LED_FLAG_MATCH_ID | LED_FLAG_USE_RGB | LED_FLAG_MATCH_LAYER,
+        .layer = 0,
+        .id1 = 0x00000000, .id0 = 0x000002AA, .id2 = 0x00000000, .id3 = 0x00000000,
+        .r = 0x00, .g = 0xFF, .b = 0x00
+    },
+    { // ESC Layer (2), HJKL, Blue
+        .flags = LED_FLAG_MATCH_ID | LED_FLAG_USE_RGB | LED_FLAG_MATCH_LAYER,
+        .layer = 2,
+        .id0 = 0x00000000, .id1 = 0x000000F0, .id2 = 0x00000000, .id3 = 0x00000000,
+        .r = 0x00, .g = 0xA6, .b = 0xB4
+    },
+    { // ESC Layer (2), UI, Red
+        .flags = LED_FLAG_MATCH_ID | LED_FLAG_USE_RGB | LED_FLAG_MATCH_LAYER,
+        .layer = 2,
+        .id0 = 0x00C00000, .id1 = 0x00000000, .id2 = 0x00000000, .id3 = 0x00000000,
+        .r = 0xFF, .g = 0x00, .b = 0x00
+    },
+    { // ESC Layer (2), Mac Volume Control, Yellow
+        .flags = LED_FLAG_MATCH_ID | LED_FLAG_USE_RGB | LED_FLAG_MATCH_LAYER,
+        .layer = 2,
+        .id0 = 0x00001C00, .id1 = 0x00000000, .id2 = 0x00000000, .id3 = 0x00000000,
+        .r = 0xFF, .g = 0xFF, .b = 0x00
+    },
+    { // ESC Layer (2), Playback Control, Green
+        .flags = LED_FLAG_MATCH_ID | LED_FLAG_USE_RGB | LED_FLAG_MATCH_LAYER,
+        .layer = 2,
+        .id0 = 0x00000380, .id1 = 0x00000000, .id2 = 0x00000000, .id3 = 0x00000000,
+        .r = 0x00, .g = 0xFF, .b = 0x00
+    },
 
     // Please see ../default_md/keymap.c for examples
     // All LEDs use the user's selected pattern (this is the factory default)
