@@ -8,7 +8,10 @@ enum alt_keycodes {
     DBG_KBD,               //DEBUG Toggle Keyboard Prints
     DBG_MOU,               //DEBUG Toggle Mouse Prints
     MD_BOOT,               //Restart into bootloader after hold timeout
-    L_T_MD,                //LED Toggle Mode //Working
+    L_T_MD,                //LED Toggle Mode             //Working
+    L_PTN,                 //LED Pattern Select Next     //Working
+    L_PTP,                 //LED Pattern Select Previous //Working
+
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -21,8 +24,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [1] = LAYOUT(
         KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______, KC_MUTE, \
-        _______, RGB_SPD, RGB_VAI, RGB_SPI, RGB_HUI, RGB_SAI, _______, U_T_AUTO,U_T_AGCR,_______, KC_PSCR, KC_SLCK, KC_PAUS, _______, KC_END, \
-        _______, RGB_RMOD,RGB_VAD, RGB_MOD, RGB_HUD, RGB_SAD, _______, _______, _______, _______, _______, _______,          _______, KC_VOLU, \
+        _______, _______, _______, _______, _______, _______, _______, U_T_AUTO,U_T_AGCR,_______, KC_PSCR, KC_SLCK, KC_PAUS, _______, KC_END, \
+        _______,   L_PTP, _______,   L_PTN, _______, _______, _______, _______, _______, _______, _______, _______,          _______, KC_VOLU, \
         _______,  L_T_MD, _______, _______, _______, MD_BOOT, NK_TOGG, DBG_TOG, _______, _______, _______, _______,          KC_PGUP, KC_VOLD, \
         _______, _______, _______,                            _______,                            _______, _______, KC_HOME, KC_PGDN, KC_END  \
     ),
@@ -95,6 +98,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 led_lighting_mode++;
                 if (led_lighting_mode > LED_MODE_MAX_INDEX) led_lighting_mode = LED_MODE_NORMAL;
+            }
+            return false;
+        case L_PTN:
+            if (record->event.pressed) {
+                if (led_animation_id == led_setups_count - 1) led_animation_id = 0;
+                else led_animation_id++;
+            }
+            return false;
+        case L_PTP:
+            if (record->event.pressed) {
+                if (led_animation_id == 0) led_animation_id = led_setups_count - 1;
+                else led_animation_id--;
             }
             return false;
         default:
