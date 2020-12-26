@@ -11,7 +11,7 @@ enum alt_keycodes {
     L_T_MD,                //LED Toggle Mode             //Working
     L_PTN,                 //LED Pattern Select Next     //Working
     L_PTP,                 //LED Pattern Select Previous //Working
-
+    L_T_ONF,               //LED On/Off                  //Working
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -26,7 +26,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______, KC_MUTE, \
         _______, _______, _______, _______, _______, _______, _______, U_T_AUTO,U_T_AGCR,_______, KC_PSCR, KC_SLCK, KC_PAUS, _______, KC_END, \
         _______,   L_PTP, _______,   L_PTN, _______, _______, _______, _______, _______, _______, _______, _______,          _______, KC_VOLU, \
-        _______,  L_T_MD, _______, _______, _______, MD_BOOT, NK_TOGG, DBG_TOG, _______, _______, _______, _______,          KC_PGUP, KC_VOLD, \
+        _______,  L_T_MD, L_T_ONF, _______, _______, MD_BOOT, NK_TOGG, DBG_TOG, _______, _______, _______, _______,          KC_PGUP, KC_VOLD, \
         _______, _______, _______,                            _______,                            _______, _______, KC_HOME, KC_PGDN, KC_END  \
     ),
     [2] = LAYOUT( // ESC Layer
@@ -112,6 +112,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 else led_animation_id--;
             }
             return false;
+        case L_T_ONF:
+            if (record->event.pressed) {
+                led_enabled = !led_enabled;
+                I2C3733_Control_Set(led_enabled);
+            }
+            return false;
         default:
             return true; //Process all other keycodes normally
     }
@@ -119,10 +125,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 led_instruction_t led_instructions[] = {
     { .flags = LED_FLAG_MATCH_ID | LED_FLAG_USE_RGB, .id0 = 0, .id1 = 0x000000F0, .id2 = 0, .id3 = 0, .r = 0, .g = 166, .b = 180 },
+    { .flags = LED_FLAG_MATCH_ID | LED_FLAG_USE_RGB, .id1 = 0, .id0 = 0x00000554, .id2 = 0, .id3 = 0, .r = 0xFF, .g = 0x00, .b = 0x00 },
+    { .flags = LED_FLAG_MATCH_ID | LED_FLAG_USE_RGB, .id1 = 0, .id0 = 0x000002AA, .id2 = 0, .id3 = 0, .r = 0, .g = 0xFF, .b = 0x00},
 
     // Please see ../default_md/keymap.c for examples
     // All LEDs use the user's selected pattern (this is the factory default)
-    { .flags = LED_FLAG_USE_ROTATE_PATTERN },
+    // { .flags = LED_FLAG_USE_ROTATE_PATTERN }, // factory default
     // end must be set to 1 to indicate end of instruction set
     { .end = 1 }
 };
