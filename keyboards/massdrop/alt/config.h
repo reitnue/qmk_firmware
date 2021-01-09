@@ -167,3 +167,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DISABLE_RGB_MATRIX_SOLID_MULTISPLASH             // Hue & value pulse away from multiple key hits then fades value out
 
 #include "config_led.h"
+
+#define TAPPING_TERM 175
