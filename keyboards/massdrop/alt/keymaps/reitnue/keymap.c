@@ -116,3 +116,35 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return true; //Process all other keycodes normally
     }
 }
+
+void rgb_matrix_indicators_user(void) {
+    if (rgb_matrix_get_flags() == LED_FLAG_NONE || rgb_matrix_get_flags() == LED_FLAG_UNDERGLOW) {
+        return;
+    }
+    int layer = get_highest_layer(layer_state);
+    switch (layer) {
+        case 2:
+            rgb_matrix_set_color(36, RGB_WHITE);
+            rgb_matrix_set_color(37, RGB_WHITE);
+            rgb_matrix_set_color(38, RGB_WHITE);
+            rgb_matrix_set_color(39, RGB_WHITE);
+            // explicty fallthrough
+        case 1:
+            // explicty fallthrough
+        case 0:
+            rgb_matrix_set_color(1, RGB_MAGENTA);
+            rgb_matrix_set_color(2, RGB_GREEN);
+            rgb_matrix_set_color(3, RGB_MAGENTA);
+            rgb_matrix_set_color(4, RGB_GREEN);
+            rgb_matrix_set_color(5, RGB_MAGENTA);
+            rgb_matrix_set_color(6, RGB_GREEN);
+            rgb_matrix_set_color(7, RGB_MAGENTA);
+            rgb_matrix_set_color(8, RGB_GREEN);
+            rgb_matrix_set_color(9, RGB_MAGENTA);
+            rgb_matrix_set_color(10, RGB_GREEN);
+            // explicty fallthrough
+        default:
+            break;
+    }
+    return;
+}
