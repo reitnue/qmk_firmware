@@ -149,18 +149,21 @@ void rgb_matrix_indicators_user(void) {
         case 1:
             // explicit fallthrough
         case 0:
-            rgb_matrix_set_color(1, RGB_MAGENTA);
+            rgb_matrix_set_color(1, RGB_GREEN);
             rgb_matrix_set_color(2, RGB_GREEN);
-            rgb_matrix_set_color(3, RGB_MAGENTA);
+            rgb_matrix_set_color(3, RGB_GREEN);
             rgb_matrix_set_color(4, RGB_GREEN);
-            rgb_matrix_set_color(5, RGB_MAGENTA);
+            rgb_matrix_set_color(5, RGB_GREEN);
             rgb_matrix_set_color(6, RGB_GREEN);
-            rgb_matrix_set_color(7, RGB_MAGENTA);
+            rgb_matrix_set_color(7, RGB_GREEN);
             rgb_matrix_set_color(8, RGB_GREEN);
-            rgb_matrix_set_color(9, RGB_MAGENTA);
+            rgb_matrix_set_color(9, RGB_GREEN);
             rgb_matrix_set_color(10, RGB_GREEN);
+            rgb_matrix_set_color(11, RGB_GREEN);
+            rgb_matrix_set_color(12, RGB_GREEN);
             // explicit fallthrough
         default:
+            rgb_matrix_set_color(23, RGB_MAGENTA);
             break;
     }
     return;
