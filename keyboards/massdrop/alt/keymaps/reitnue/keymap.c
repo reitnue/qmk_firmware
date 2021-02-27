@@ -187,6 +187,7 @@ void rgb_matrix_indicators_user(void) {
             // explicit fallthrough
         default:
             rgb_matrix_set_color(23, RGB_MAGENTA);
+            rgb_matrix_set_color(31, RGB_MAGENTA);
             break;
     }
     return;
