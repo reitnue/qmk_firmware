@@ -217,6 +217,8 @@ void rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(12, RGB_GREEN);
             // explicit fallthrough
         default:
+            rgb_matrix_set_color(16, RGB_CYAN); // Q
+            rgb_matrix_set_color(17, RGB_CYAN); // W
             rgb_matrix_set_color(23, RGB_MAGENTA); // I
             rgb_matrix_set_color(31, RGB_MAGENTA); // A
             rgb_matrix_set_color(45, RGB_MAGENTA); // Z
