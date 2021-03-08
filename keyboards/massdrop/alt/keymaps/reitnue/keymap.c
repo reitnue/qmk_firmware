@@ -51,6 +51,27 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_Z_CTRL_Z] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_z_ctrl_z_finished, td_z_ctrl_z_reset), // tap once for "a", twice fo Ctrl a
 };
 
+// COMBOS
+enum combo_events {
+    QW_CTRL_W,
+};
+
+const uint16_t PROGMEM qw_ctrl_w_combo[] = {KC_Q, KC_W, COMBO_END};
+
+combo_t key_combos[COMBO_COUNT] = {
+    [QW_CTRL_W] = COMBO_ACTION(qw_ctrl_w_combo),
+};
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+    switch(combo_index) {
+        case QW_CTRL_W:
+            if (pressed) {
+              tap_code16(LCTL(KC_W));
+            }
+            break;
+    }
+}
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_65_ansi_blocker(
         KC_GRV,         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,            KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_DEL,  \
