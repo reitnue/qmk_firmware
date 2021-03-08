@@ -12,18 +12,51 @@ enum alt_keycodes {
 
 enum tap_dance_declarations {
     TD_I_ESC,
+    TD_A_CTRL_A,
+    TD_C_CTRL_C,
+    TD_Z_CTRL_Z,
 };
+
+
+// Define a type containing as many tapdance states as you need
+typedef enum {
+    SINGLE_TAP,
+    DOUBLE_SINGLE_TAP
+} td_state_t;
+
+// Create a global instance of the tapdance state type
+static td_state_t td_state;
+
+// Declare your tapdance functions:
+
+// Function to determine the current tapdance state
+uint8_t cur_dance(qk_tap_dance_state_t *state);
+
+// `finished` and `reset` functions for each tapdance keycode
+// TD_A_CTRL_A
+void td_a_ctrl_a_finished(qk_tap_dance_state_t *state, void *user_data);
+void td_a_ctrl_a_reset(qk_tap_dance_state_t *state, void *user_data);
+// TD_C_CTRL_C
+void td_c_ctrl_c_finished(qk_tap_dance_state_t *state, void *user_data);
+void td_c_ctrl_c_reset(qk_tap_dance_state_t *state, void *user_data);
+// TD_Z_CTRL_Z
+void td_z_ctrl_z_finished(qk_tap_dance_state_t *state, void *user_data);
+void td_z_ctrl_z_reset(qk_tap_dance_state_t *state, void *user_data);
+
 
 qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_I_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_I, KC_ESC), // tap once for "i", twitce for ESC
+    [TD_A_CTRL_A] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_a_ctrl_a_finished, td_a_ctrl_a_reset), // tap once for "a", twice fo Ctrl a
+    [TD_C_CTRL_C] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_c_ctrl_c_finished, td_c_ctrl_c_reset), // tap once for "a", twice fo Ctrl a
+    [TD_Z_CTRL_Z] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_z_ctrl_z_finished, td_z_ctrl_z_reset), // tap once for "a", twice fo Ctrl a
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_65_ansi_blocker(
         KC_GRV,         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,            KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_DEL,  \
         KC_TAB,         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    TD(TD_I_ESC),    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS, KC_HOME, \
-        MO(2),          KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,            KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,  KC_PGUP, \
-        KC_LSFT,        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM,         KC_DOT,  KC_SLSH, MO(3),            KC_UP,   KC_PGDN, \
+        MO(2),          TD(TD_A_CTRL_A),    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,            KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,  KC_PGUP, \
+        KC_LSFT,        TD(TD_Z_CTRL_Z),    KC_X,    TD(TD_C_CTRL_C),    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM,         KC_DOT,  KC_SLSH, MO(3),            KC_UP,   KC_PGDN, \
         KC_LCTL,        KC_LALT, KC_LGUI,                            KC_SPC,                            KC_RALT, MO(1),   KC_LEFT, KC_DOWN, KC_RGHT  \
     ),
     [1] = LAYOUT_65_ansi_blocker(
@@ -163,8 +196,88 @@ void rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(12, RGB_GREEN);
             // explicit fallthrough
         default:
-            rgb_matrix_set_color(23, RGB_MAGENTA);
+            rgb_matrix_set_color(23, RGB_MAGENTA); // I
+            rgb_matrix_set_color(31, RGB_MAGENTA); // A
+            rgb_matrix_set_color(45, RGB_MAGENTA); // Z
+            rgb_matrix_set_color(47, RGB_MAGENTA); // C
             break;
     }
     return;
+}
+
+// Determine the tapdance state to return
+uint8_t cur_dance(qk_tap_dance_state_t *state) {
+    if (state->count == 1) {
+        return SINGLE_TAP;
+    } else if (state->count == 2) {
+        return DOUBLE_SINGLE_TAP;
+    } else {
+        return 99; // Any number higher than the maximum state value you return above
+    }
+}
+
+// Handle the possible states for each tapdance keycode you define:
+// TD_A_CTRL_A
+void td_a_ctrl_a_finished(qk_tap_dance_state_t *state, void *user_data) {
+    td_state = cur_dance(state);
+    switch (td_state) {
+        case SINGLE_TAP:
+            tap_code(KC_A);
+            break;
+        case DOUBLE_SINGLE_TAP:
+            register_code16(LCTL(KC_A));
+    }
+}
+
+void td_a_ctrl_a_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (td_state) {
+        case SINGLE_TAP:
+            break;
+        case DOUBLE_SINGLE_TAP:
+            unregister_code16(LCTL(KC_A));
+    }
+}
+
+
+// TD_C_CTRL_C
+void td_c_ctrl_c_finished(qk_tap_dance_state_t *state, void *user_data) {
+    td_state = cur_dance(state);
+    switch (td_state) {
+        case SINGLE_TAP:
+            tap_code(KC_C);
+            break;
+        case DOUBLE_SINGLE_TAP:
+            register_code16(LCTL(KC_C));
+    }
+}
+
+void td_c_ctrl_c_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (td_state) {
+        case SINGLE_TAP:
+            break;
+        case DOUBLE_SINGLE_TAP:
+            unregister_code16(LCTL(KC_C));
+    }
+}
+
+
+// TD_Z_CTRL_Z
+void td_z_ctrl_z_finished(qk_tap_dance_state_t *state, void *user_data) {
+    td_state = cur_dance(state);
+    switch (td_state) {
+        case SINGLE_TAP:
+            tap_code(KC_Z);
+            break;
+        case DOUBLE_SINGLE_TAP:
+            register_code16(LCTL(KC_Z));
+    }
+}
+
+void td_z_ctrl_z_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (td_state) {
+        case SINGLE_TAP:
+            break;
+        case DOUBLE_SINGLE_TAP:
+            unregister_code16(LCTL(KC_Z));
+    }
 }
