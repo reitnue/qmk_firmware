@@ -224,7 +224,7 @@ void td_a_ctrl_a_finished(qk_tap_dance_state_t *state, void *user_data) {
         case SINGLE_TAP:
             tap_code(KC_A);
             break;
-        case DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
+        case DOUBLE_SINGLE_TAP:
             register_code16(LCTL(KC_A));
     }
 }
@@ -246,7 +246,7 @@ void td_c_ctrl_c_finished(qk_tap_dance_state_t *state, void *user_data) {
         case SINGLE_TAP:
             tap_code(KC_C);
             break;
-        case DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
+        case DOUBLE_SINGLE_TAP:
             register_code16(LCTL(KC_C));
     }
 }
@@ -268,7 +268,7 @@ void td_z_ctrl_z_finished(qk_tap_dance_state_t *state, void *user_data) {
         case SINGLE_TAP:
             tap_code(KC_Z);
             break;
-        case DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
+        case DOUBLE_SINGLE_TAP:
             register_code16(LCTL(KC_Z));
     }
 }
