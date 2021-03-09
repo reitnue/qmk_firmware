@@ -54,12 +54,15 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 // COMBOS
 enum combo_events {
     QW_CTRL_W,
+    QR_CTRL_R,
 };
 
 const uint16_t PROGMEM qw_ctrl_w_combo[] = {KC_Q, KC_W, COMBO_END};
+const uint16_t PROGMEM qr_ctrl_r_combo[] = {KC_Q, KC_R, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
     [QW_CTRL_W] = COMBO_ACTION(qw_ctrl_w_combo),
+    [QR_CTRL_R] = COMBO_ACTION(qr_ctrl_r_combo),
 };
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
@@ -67,6 +70,11 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         case QW_CTRL_W:
             if (pressed) {
               tap_code16(LCTL(KC_W));
+            }
+            break;
+        case QR_CTRL_R:
+            if (pressed) {
+              tap_code16(LCTL(KC_R));
             }
             break;
     }
@@ -217,8 +225,9 @@ void rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(12, RGB_GREEN);
             // explicit fallthrough
         default:
-            rgb_matrix_set_color(16, RGB_CYAN); // Q
+            rgb_matrix_set_color(16, RGB_WHITE); // Q
             rgb_matrix_set_color(17, RGB_CYAN); // W
+            rgb_matrix_set_color(19, RGB_CYAN); // R
             rgb_matrix_set_color(23, RGB_MAGENTA); // I
             rgb_matrix_set_color(31, RGB_MAGENTA); // A
             rgb_matrix_set_color(45, RGB_MAGENTA); // Z
