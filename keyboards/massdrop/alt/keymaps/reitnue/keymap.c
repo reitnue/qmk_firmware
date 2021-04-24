@@ -54,7 +54,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_65_ansi_blocker(
         KC_GRV,         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,            KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_DEL,  \
-        KC_TAB,         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    TD(TD_I_ESC),    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS, KC_HOME, \
+        KC_TAB,         LCTL_T(KC_Q),    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    TD(TD_I_ESC),    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS, KC_HOME, \
         MO(2),          TD(TD_A_CTRL_A),    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,            KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,  KC_PGUP, \
         KC_LSFT,        TD(TD_Z_CTRL_Z),    KC_X,    TD(TD_C_CTRL_C),    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM,         KC_DOT,  KC_SLSH, MO(3),            KC_UP,   KC_PGDN, \
         KC_LCTL,        KC_LALT, KC_LGUI,                            KC_SPC,                            KC_RALT, MO(1),   KC_LEFT, KC_DOWN, KC_RGHT  \
@@ -196,6 +196,7 @@ void rgb_matrix_indicators_user(void) {
             rgb_matrix_set_color(12, RGB_GREEN);
             // explicit fallthrough
         default:
+            rgb_matrix_set_color(16, RGB_WHITE); // Q
             rgb_matrix_set_color(23, RGB_MAGENTA); // I
             rgb_matrix_set_color(31, RGB_MAGENTA); // A
             rgb_matrix_set_color(45, RGB_MAGENTA); // Z
