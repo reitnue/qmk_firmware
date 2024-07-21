@@ -44,3 +44,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_ANIMATIONS
 #define RGBLIGHT_SLEEP
 */
+
+/* https://github.com/joric/qmk/blob/master/docs/feature_encoders.md */
